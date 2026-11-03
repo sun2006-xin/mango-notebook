@@ -1,5 +1,7 @@
 # 芒果本本（Mango Notebook）
 
+![芒果本本 GitHub 主视觉海报](assets/mango-notebook-github-banner.jpg)
+
 离线优先的个人学习规划应用。把今日任务、周计划、专注计时、学习笔记和日记放在一处，照自己的节奏推进。
 
 Mango Notebook is an offline-first personal learning planner for daily tasks, weekly planning, focus sessions, study notes, and journaling.
