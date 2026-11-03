@@ -1,0 +1,1010 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================================
+   Design Token —— 与 ARCHITECTURE §7.2 逐字一致
+   纪律：颜色一律存 `R G B` 三元组，Tailwind 侧用 rgb(var(--rgb-*) / <alpha-value>)
+   映射，`bg-accent/10` 这类透明度修饰符才生效。
+   这里是全工程唯一允许出现字面色值 / px 的地方（token 的定义处）。
+   ========================================================================= */
+:root {
+  /* ---------- 颜色（RGB 三元组） ----------
+     中性底走「白」：近白页底 + 纯白卡片 + zinc 灰阶。
+     这是 Notion / Linear / Stripe 这一代效率工具的做法 ——
+     层次靠**描边**而不是靠底色冷暖，屏幕再差也不会显脏。
+
+     主色取自 logo 的叶色 #1F6B4B：「深林绿」。
+     绿色在这个产品里有语义加成 —— 勾掉任务的动作本身就是绿的，
+     主色与"完成"同色，不需要第二套语言去解释。
+     参考 ui-ux-pro-max 的 Productivity Tool 档：绿系主色 + 橙色动作，
+     橙色（mango）只做点缀，不承担大面积背景。
+     ------------------------------------------------------------------ */
+  --rgb-paper:          250 250 250; /* #FAFAFA 页面底（近白，卡片才浮得起来） */
+  --rgb-surface:        255 255 255; /* #FFFFFF 卡片/抽屉/输入框 */
+  --rgb-surface-sunk:   244 244 245; /* #F4F4F5 输入框底/收起区 */
+  --rgb-line:           229 229 232; /* #E5E5E8 分隔线/描边 */
+  --rgb-ink:             24  24  27; /* #18181B 主文字 16.9:1 */
+  --rgb-ink-2:           82  82  91; /* #52525B 次文字 7.5:1 */
+  --rgb-ink-3:          139 139 149; /* #8B8B95 弱文字 3.4:1（仅 >=14px 非关键） */
+  --rgb-accent:          31 107  75; /* #1F6B4B 深林绿：主按钮/焦点/选中 */
+  --rgb-accent-hover:    26  92  64; /* #1A5C40 hover 加深 */
+  --rgb-accent-press:    20  71  47; /* #14472F 按下再深一档 */
+  --rgb-accent-soft:    233 243 238; /* #E9F3EE 选中行/今日格底 */
+  --rgb-on-accent:      255 255 255; /* 绿底白字 6.4:1 */
+  --rgb-done:            31 107  75; /* 完成态与主色同源：勾掉就是"变绿" */
+  --rgb-highlight:      245 158  11; /* #F59E0B 芒果金：仅点缀（专注环/连续打卡） */
+  --rgb-warn:           180  83   9; /* #B45309 逾期/高优先级 */
+  --rgb-danger:         190  18  60; /* #BE123C 删除 5.9:1 */
+  --rgb-focus:           31 107  75; /* 焦点环（与 accent 同） */
+  /* 交互底色：与 ink 同色系，只靠透明度分层（中性灰，不引入第二种灰） */
+  --hover-alpha: 0.045;
+  --press-alpha: 0.08;
+
+  /* ---------- 字体（系统栈，零外链） ---------- */
+  --font-sans: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+  --font-num: 'Space Grotesk', 'Manrope', ui-sans-serif, system-ui, sans-serif;
+
+  /* ---------- 字阶 ---------- */
+  --type-date: clamp(28px, 3.4vw, 40px);
+  --type-h1: clamp(22px, 2.6vw, 28px);
+  --type-h2: 18px;
+  --type-body: 15px;
+  --type-body-sm: 13px;
+  --type-label: 12px;
+  --type-num-lg: clamp(24px, 3vw, 32px);
+  --lh-date: 1.12;
+  --lh-h1: 1.25;
+  --lh-h2: 1.4;
+  --lh-body: 1.55;
+  --lh-body-sm: 1.5;
+  --lh-label: 1.45;
+  --lh-num: 1;
+  --ls-date: -0.02em;
+  --ls-h1: -0.02em;
+  --ls-label: 0.06em;
+
+  /* ---------- 间距（4/8 网格，只用这 8 个值） ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* ---------- 圆角 ---------- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 999px;
+
+  /* ---------- 阴影（两层克制） ---------- */
+  --shadow-1: 0 1px 2px rgb(var(--rgb-ink) / 0.05), 0 1px 3px rgb(var(--rgb-ink) / 0.04);
+  --shadow-2: 0 2px 4px rgb(var(--rgb-ink) / 0.05), 0 12px 32px rgb(var(--rgb-ink) / 0.08);
+
+  /* ---------- 动效 ---------- */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --ease-accelerate: cubic-bezier(0.3, 0, 1, 1);
+  --dur-micro: 120ms;
+  --dur-short: 180ms;
+  --dur-base: 250ms;
+  --dur-long: 400ms;
+
+  /* ---------- 布局 ---------- */
+  --sidebar-w: 220px;
+  --content-max: 880px;
+  --content-max-calendar: 1080px; /* 周视图（7 列）与日历视图共用 */
+  --week-col-min-h: 220px; /* 周视图列最小高度：保证 7 列底边等高（A9） */
+  --drawer-w: 420px;
+
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --rgb-paper:            9   9  11; /* #09090B zinc-950 */
+  --rgb-surface:         24  24  27; /* #18181B */
+  --rgb-surface-sunk:    16  16  19; /* #101013 */
+  --rgb-line:            39  39  42; /* #27272A */
+  --rgb-ink:            244 244 245; /* #F4F4F5 16:1 */
+  --rgb-ink-2:          161 161 170; /* #A1A1AA 7.9:1 */
+  --rgb-ink-3:          113 113 122; /* #71717A 3.6:1（大号/非关键） */
+  /* 深底上把绿提亮：暗底会把 #1F6B4B 压成一团墨 */
+  --rgb-accent:          52 168 120; /* #34A878 */
+  --rgb-accent-hover:    66 190 138; /* #42BE8A */
+  --rgb-accent-press:    40 140 100; /* #288C64 */
+  --rgb-accent-soft:     18  46  36; /* #122E24 */
+  --rgb-on-accent:        9   9  11; /* 亮绿上放近黑 7.1:1；白字仅 2.9:1 ❌ */
+  --rgb-done:            52 168 120; /* #34A878 */
+  --rgb-highlight:      251 191  36; /* #FBBF24 芒果金（深底提亮） */
+  --rgb-warn:           251 191  36; /* #FBBF24 8.6:1 */
+  --rgb-danger:         248 113 113; /* #F87171 5.6:1 */
+  --rgb-focus:           74 222 128; /* #4ADE80 焦点环比 accent 更亮，保证 3:1 可见 */
+  /* 深色下同样只靠同色系透明度分层，但幅度更大（暗底上 4% 几乎看不见） */
+  --hover-alpha: 0.09;
+  --press-alpha: 0.15;
+
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 0.4), 0 1px 3px rgb(0 0 0 / 0.3);
+  --shadow-2: 0 2px 4px rgb(0 0 0 / 0.4), 0 12px 32px rgb(0 0 0 / 0.55);
+
+  color-scheme: dark;
+}
+
+/* ============================================================================
+   基础样式
+   ========================================================================= */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* --------------------------------------------------------------------------
+     滚动条
+     --------------------------------------------------------------------------
+     Windows 上 Chromium 的默认滚动条是一条宽灰色带上下箭头的东西，
+     在白底绿主色的界面里像根钢管。这里整个换成细圆角、随主题的样式：
+     - 轨道全透明（融入页面背景，不再有独立的灰带）
+     - 滑块用 ink 的低透明度 + transparent 边框 + background-clip: content-box，
+       这是现代应用（Notion / Linear）的做法 —— 视觉上是一根 6px 的细胶囊，
+       hover 时加深，不 hover 时几乎隐形
+     - 深色模式自动跟随 ink 令牌，不用写第二份
+     -------------------------------------------------------------------------- */
+  /* 注意：不能写 scrollbar-width/color —— 一旦写了标准属性，
+     Chromium 会切到它自己的 Fluent 悬浮滚动条并**忽略**下面整套 ::-webkit-scrollbar，
+     而悬浮条是合成层画的，行为无法从截图确认。这里全走 ::-webkit-scrollbar，
+     得到一根常驻的 6px 细胶囊，可验证、跨版本稳定。 */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--rgb-ink) / 0.16);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(var(--rgb-ink) / 0.3);
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    background-color: rgb(var(--rgb-ink) / 0.4);
+  }
+
+  body {
+    @apply bg-paper font-sans text-body text-ink antialiased;
+    margin: 0;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /*
+      移动端防横向溢出的**最后一道网**（P0）。
+
+      为什么是 `clip` 而不是 `hidden`：
+      - `overflow-x: hidden` 会让该元素变成滚动容器，从而**破坏子元素的
+        `position: sticky`**（顶栏/侧栏一滚就跟着跑），还会吃掉惯性滚动；
+      - `clip` 只裁剪、不创建滚动容器，`overflow-y` 得以保持 `visible`，
+        sticky / fixed 的行为完全不变。
+
+      它挡的是这条链路：某个组件宽度没收住 → 文档 scrollWidth 超过视口 →
+      移动端浏览器把**布局视口**撑宽 → 贴着布局视口算的 `position: fixed`
+      顶栏与底部 Tab 被一起拉出屏幕（"界面不固定、超出界限"）。
+      注意这是安全网不是修复：真出问题时内容仍会被裁掉（看不见），
+      真正的修复要在组件里收住宽度。是否还有组件没收住，用
+      `node scripts/audit_mobile_layout.mjs` 实测 —— 它会逐个视口逐个视图量
+      `scrollWidth > clientWidth`，比肉眼可靠。
+    */
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    margin: 0;
+  }
+
+  button {
+    font-family: inherit;
+  }
+
+  ::selection {
+    background: rgb(var(--rgb-accent) / 0.18);
+  }
+
+  :where(button, input, textarea, select, [tabindex]):focus-visible {
+    outline: 2px solid rgb(var(--rgb-focus));
+    outline-offset: 2px;
+  }
+
+  /* 数字统一等宽，避免进度数字与时间列抖动 */
+  /* 今日概览条展开：轻微的"从上落下"，240ms 以内，尊重减少动效偏好。
+     只做 opacity + 4px 位移 —— 不做缩放，避免在低端安卓上掉帧。 */
+  @keyframes summary-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .summary-enter {
+    animation: summary-in 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  /*
+    视图切换：8px 上浮 + 淡入。
+    为什么只做"进"不做"出"：视图是条件渲染的，做出场要给旧视图续命 180ms
+    （还得管它期间的数据与滚动位置），代价远大于收益。主流 App 里绝大多数
+    底部 Tab 切换也只有进入动效 —— 因为"新内容立刻可读"本身就是最好的反馈。
+  */
+  @keyframes view-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .view-enter {
+    animation: view-in 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  /*
+    新增一行：只淡入，**不碰 transform**。
+    任务行在滑动删除时自己持有 transform（`useSwipe` 直接写 translateX），
+    这里再加一个 transform 动画会和它抢同一个属性 —— 滑动中途"跳一下"就是这么来的。
+  */
+  @keyframes row-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .row-enter {
+    animation: row-in 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .summary-enter,
+    .view-enter,
+    .row-enter {
+      animation: none;
+    }
+  }
+
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ============================================================================
+   组件配方（Button / Chip 不单独建文件，见 §5.0）
+   纪律：只用 @apply 引用 token 语义类，不写字面色值
+   ========================================================================= */
+@layer components {
+  /*
+    按钮三态（对齐主流产品的手感规范）：
+      静息 → hover 加深 → pressed 再深一档 + 轻微下压
+    :active 的 transform 走 --ease-standard 120ms，位移只做 2%，不做"弹跳"
+    —— 弹跳留给勾选框，按钮要的是"确认感"而不是"弹性"。
+  */
+  .btn {
+    @apply inline-flex h-11 select-none items-center justify-center gap-2 whitespace-nowrap
+      rounded-md border border-transparent px-4 text-body-sm font-semibold;
+    /*
+      两段式过渡：按下走 --dur-micro(120ms)，松开走 --dur-short(180ms)。
+      统一用一条 180ms 的话，按下瞬间会"慢半拍"—— 这是很多界面摸起来发钝的根因。
+      按下的反馈必须比松开的回落更快，手感才对。
+    */
+    transition:
+      background-color var(--dur-short) var(--ease-standard),
+      border-color var(--dur-short) var(--ease-standard),
+      color var(--dur-short) var(--ease-standard),
+      box-shadow var(--dur-short) var(--ease-standard),
+      transform var(--dur-short) var(--ease-standard);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .btn:active:not(:disabled) {
+    transform: scale(0.97);
+    transition-duration: var(--dur-micro);
+  }
+
+  /*
+    键盘焦点环：只在 :focus-visible（键盘 Tab 进来）出现，鼠标点完不残留。
+    outline 会自动跟随 border-radius，不需要手写圆角。
+  */
+  .btn:focus-visible,
+  a:focus-visible,
+  [role='button']:focus-visible {
+    outline: 2px solid rgb(var(--rgb-focus));
+    outline-offset: 2px;
+  }
+
+  .btn:disabled {
+    @apply cursor-not-allowed text-ink-3;
+    opacity: 0.55;
+    box-shadow: none;
+  }
+
+  /*
+    主按钮的立体感来自光影，不来自渐变：
+    一层落影（告诉眼睛"它浮在页面上"）+ 一层内顶高光（模拟光从上方来）。
+    按下时落影收成内阴影 → 视觉上真的被按进去了。
+  */
+  .btn-primary {
+    @apply bg-accent text-accent-on;
+    box-shadow:
+      0 1px 2px rgb(var(--rgb-accent) / 0.28),
+      inset 0 1px 0 rgb(255 255 255 / 0.14);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    @apply bg-accent-hover;
+    box-shadow:
+      0 3px 10px rgb(var(--rgb-accent) / 0.32),
+      inset 0 1px 0 rgb(255 255 255 / 0.16);
+  }
+
+  .btn-primary:active:not(:disabled) {
+    @apply bg-accent-press;
+    box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.22);
+  }
+
+  .btn-tonal {
+    @apply bg-accent-soft text-accent;
+  }
+
+  .btn-tonal:hover:not(:disabled) {
+    @apply bg-accent/15;
+  }
+
+  .btn-tonal:active:not(:disabled) {
+    @apply bg-accent/25;
+  }
+
+  .btn-outlined {
+    @apply border-line bg-surface text-ink;
+  }
+
+  .btn-outlined:hover:not(:disabled) {
+    @apply border-ink-3 bg-surface;
+    box-shadow: var(--shadow-1);
+  }
+
+  .btn-outlined:active:not(:disabled) {
+    background: rgb(var(--rgb-ink) / var(--press-alpha));
+    box-shadow: none;
+  }
+
+  .btn-text {
+    @apply px-2 text-ink-2;
+  }
+
+  .btn-text:hover:not(:disabled) {
+    background: rgb(var(--rgb-ink) / var(--hover-alpha));
+    @apply text-ink;
+  }
+
+  .btn-text:active:not(:disabled) {
+    background: rgb(var(--rgb-ink) / var(--press-alpha));
+  }
+
+  .btn-danger {
+    @apply text-danger;
+  }
+
+  .btn-danger:hover:not(:disabled) {
+    @apply bg-danger/10;
+  }
+
+  .btn-danger:active:not(:disabled) {
+    @apply bg-danger/20;
+  }
+
+  /*
+    行级交互底色：hover 4% / 按下 7%（深色下 9% / 15%）。
+    与 ink 同色系只靠透明度分层 —— 这是主流效率工具保持"暖中性"的做法，
+    不引入第二个灰，因此深浅色切换时层次关系天然一致。
+  */
+  .row-hover {
+    transition:
+      background-color var(--dur-short) var(--ease-standard),
+      opacity var(--dur-short) var(--ease-standard);
+  }
+
+  .row-hover:hover {
+    background: rgb(var(--rgb-ink) / var(--hover-alpha));
+  }
+
+  .row-hover:active {
+    background: rgb(var(--rgb-ink) / var(--press-alpha));
+    transition-duration: var(--dur-micro);
+  }
+
+  /*
+    悬浮操作按钮（移动端"新建任务"主入口）。
+    56px 是主流产品的通行尺寸（比 44 的触控下限更大，因为它是一屏唯一的主行动）。
+    阴影用 shadow-2（两层），并预留 iOS 安全区。
+  */
+  .fab {
+    @apply pointer-events-auto grid place-items-center rounded-full bg-accent text-accent-on shadow-2;
+    width: 56px;
+    height: 56px;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      background-color var(--dur-short) var(--ease-standard),
+      transform var(--dur-micro) var(--ease-standard),
+      box-shadow var(--dur-short) var(--ease-standard);
+  }
+
+  .fab:hover {
+    @apply bg-accent-hover;
+  }
+
+  .fab:active {
+    @apply bg-accent-press;
+    transform: scale(0.94);
+  }
+
+  /*
+    横向滚动条隐形（chip 条 / 分段选择器用）。
+
+    ⚠️ 与上面 `::-webkit-scrollbar` 那套常驻细胶囊的区别：那是**页面主滚动条**
+    （要看得见、能拖），这里的容器只是"内容比容器宽时允许横滑"，
+    在一条 44px 高的胶囊底下再画一根滚动条是纯粹的噪音。
+    两条规则都写，Chromium 走 webkit 那条、Firefox 走标准那条。
+  */
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* 安全区：iPhone 底部小黑条 / 刘海屏。缺了它，底部 Tab 会被系统手势条压住。 */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  /*
+    滑动手势层（触摸设备）：右滑完成 / 左滑打开详情。
+    位移只跑 transform，阈值内的跟手位移不做 transition，松手回弹才给动画。
+  */
+  .swipe {
+    position: relative;
+    overflow: hidden;
+    touch-action: pan-y; /* 允许纵向滚动，横向留给手势 */
+  }
+
+  .swipe-surface {
+    position: relative;
+    z-index: 1;
+    will-change: transform;
+  }
+
+  .swipe-surface--settling {
+    transition: transform var(--dur-base) var(--ease-decelerate);
+  }
+
+  .swipe-hint {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+  }
+
+  .swipe-hint--done {
+    left: 0;
+    padding-left: var(--space-5);
+    color: rgb(var(--rgb-done));
+  }
+
+  .swipe-hint--open {
+    right: 0;
+    padding-right: var(--space-5);
+    color: rgb(var(--rgb-accent));
+  }
+
+  /*
+    拖拽态。
+    `z-index` 抬起来是为了让被拖的行压在其它行上面（否则半透明后能看见底下的行
+    从它"身体里"穿过去）；`pointer-events: none` 是必须的 ——
+    落点判定用 `document.elementFromPoint` 之外的矩形扫描（readGeometry），
+    但被拖的行如果还能接收指针事件，某些浏览器会把后续 pointermove 判给它自己，
+    落点就永远算在被拖行上面。
+  */
+  .swipe.is-dragging {
+    z-index: 30;
+    overflow: visible;
+  }
+
+  .swipe.is-dragging .swipe-surface {
+    opacity: 0.45;
+    box-shadow: 0 6px 18px rgb(0 0 0 / 0.18);
+    border-radius: var(--radius-md, 8px);
+  }
+
+  /* 落点指示线：插到这一行之前 */
+  .drop-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    /*
+      ⚠️ 必须是 `top: 0`，不能是 `-1px`：`.swipe` 上有 `overflow: hidden`
+      （侧滑手势要裁掉位移出去的部分），负偏移会被裁掉一半，
+      2px 的线只剩 1px —— 看起来像是"有点脏"而不是"有一个落点"。
+    */
+    top: 0;
+    z-index: 2;
+    height: 2px;
+    border-radius: 2px;
+    background: rgb(var(--rgb-accent));
+    pointer-events: none;
+  }
+
+  /* ==========================================================================
+     表面（卡片 / 空态 / 警示条）
+     --------------------------------------------------------------------------
+     为什么要抽：`rounded-lg border border-line bg-surface` 在 10 个文件里手抄了
+     **18 次**。这类"视觉身份"恰恰是最容易在迭代中走岔的东西 —— 换一次圆角或描边，
+     满仓库找漏一处，屏幕上就多一块"看着不太一样"的卡片，而没人报得出来。
+
+     只收身份（圆角 + 描边 + 底色），**不收内边距**：
+     `p-4` / `p-5` / `px-4 py-3` 是排版决定，硬塞进类里反而要在每个调用处覆盖回来。
+     ========================================================================== */
+  .card {
+    @apply rounded-lg border border-line bg-surface;
+  }
+
+  /* 空态：虚线框比实线更"可填充"，暗示这里将来会有内容 */
+  .card-dashed {
+    @apply rounded-lg border border-dashed border-line;
+  }
+
+  /*
+    警示条（只读模式横幅等）：底色用 warn 的低透明度而不是新造一个灰，
+    深浅色模式下都能自动跟着 --rgb-warn 走。
+  */
+  .banner-warn {
+    border: 1px solid rgb(var(--rgb-warn) / 0.45);
+    background: rgb(var(--rgb-warn) / 0.1);
+  }
+
+  /*
+    输入框（input / textarea / select 共用）。
+    重复度比卡片更高：`rounded-md border border-line bg-surface` + 焦点环
+    在 11 个文件里出现了 34 次，焦点环那串 `focus:border-accent focus:ring-2
+    focus:ring-accent/15` 又单独抄了 24 次 —— 改一次焦点样式要满仓库找。
+
+    高度 / 字号 / 宽度**不进这个类**：h-9 与 h-11、text-body 与 text-label
+    都是各处的排版决定，塞进来就得在每个调用处覆盖回去。
+  */
+  .field {
+    @apply rounded-md border border-line bg-surface text-ink outline-none;
+    @apply placeholder:text-ink-3;
+    transition:
+      border-color var(--dur-short) var(--ease-standard),
+      box-shadow var(--dur-short) var(--ease-standard);
+  }
+
+  .field:focus {
+    border-color: rgb(var(--rgb-accent));
+    box-shadow: 0 0 0 2px rgb(var(--rgb-accent) / 0.15);
+  }
+
+  /* 分类 / 优先级 / 筛选标签 */
+  .chip {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-label text-ink-2;
+    background: rgb(var(--rgb-ink) / 0.06);
+  }
+
+  .chip-warn {
+    @apply text-warn;
+    background: rgb(var(--rgb-warn) / 0.12);
+  }
+
+  /* 内联 SVG 图标：统一 1.5px 描边，颜色跟随 currentColor */
+  .icon {
+    @apply block shrink-0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /*
+    勾选框圆环（20px + 1.5px 发丝描边，与 M1 原型逐字一致）。
+    这两个尺寸不属于六类 token（颜色/字号/间距/圆角/时长/缓动），
+    按"配方集中在此文件"的纪律放在这里，组件里不出现任何 px 字面量。
+  */
+  .cb-ring {
+    @apply grid shrink-0 place-items-center rounded-full text-accent-on
+      transition-colors duration-micro ease-standard;
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid rgb(var(--rgb-ink-2) / 0.75);
+  }
+
+  .cb-ring--on {
+    @apply bg-done;
+    border-color: rgb(var(--rgb-done));
+  }
+
+  /*
+    compact 勾选框（周视图列内 / 窄密度）：26 热区 + 15 圆环，与 M1 定稿一致。
+    同 .cb-ring：尺寸不属于六类 token，集中在配方层。
+  */
+  .cb-sm {
+    width: 26px;
+    height: 26px;
+  }
+
+  .cb-ring--sm {
+    width: 15px;
+    height: 15px;
+  }
+
+  /*
+    高优先级标记：只出现在行最左缘的 3px 竖条（M1 定稿）。
+    位置刻意贴住行左缘、位于勾选框外侧 —— 左右都不与任何文字相邻，
+    因此不会被读成分隔符；中/低是默认态，不占视觉带宽（排序仍生效）。
+  */
+  .prio-flag {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 3px;
+    height: 60%;
+    max-height: 28px;
+    transform: translateY(-50%);
+    border-radius: 2px;
+    background: rgb(var(--rgb-warn));
+  }
+
+  /*
+    删除线：用 scaleX 从左侧展开（不是直接画一条线），勾选时 180ms 内完成。
+    元素常驻，由父级 .is-done 驱动，否则挂载即完成态、没有动画。
+  */
+  .strike {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--dur-short) var(--ease-standard);
+    pointer-events: none;
+  }
+
+  .is-done .strike {
+    transform: scaleX(1);
+  }
+
+  /* 抽屉遮罩 */
+  .scrim {
+    background: rgb(var(--rgb-ink) / 0.3);
+  }
+
+  /*
+    Markdown 预览排版（日记用）。
+    这里只管"标签长什么样"，不管颜色 token —— 字号行高一律引用既有变量，
+    避免出现第三套排版尺度。所有选择器都挂在 .diary-md 下，
+    不会泄漏到应用其它部分。
+  */
+  .diary-md {
+    font-size: var(--type-body);
+    line-height: var(--lh-body);
+    color: rgb(var(--rgb-ink));
+    overflow-wrap: anywhere;
+  }
+
+  .diary-md > * + * {
+    margin-top: var(--space-3);
+  }
+
+  .diary-md h1,
+  .diary-md h2,
+  .diary-md h3 {
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .diary-md h1 { font-size: var(--type-h1); }
+  .diary-md h2 { font-size: var(--type-h2); }
+  .diary-md h3 { font-size: var(--type-body); }
+
+  .diary-md ul,
+  .diary-md ol {
+    padding-left: 1.35em;
+  }
+
+  .diary-md ul { list-style: disc; }
+  .diary-md ol { list-style: decimal; }
+
+  .diary-md li + li {
+    margin-top: 0.25em;
+  }
+
+  .diary-md li::marker {
+    color: rgb(var(--rgb-ink-3));
+  }
+
+  .diary-md blockquote {
+    border-left: 3px solid rgb(var(--rgb-line));
+    padding-left: var(--space-3);
+    color: rgb(var(--rgb-ink-2));
+  }
+
+  .diary-md code {
+    font-family: var(--font-num);
+    font-size: 0.92em;
+    background: rgb(var(--rgb-surface-sunk));
+    border-radius: 3px;
+    padding: 0.1em 0.35em;
+  }
+
+  .diary-md pre {
+    background: rgb(var(--rgb-surface-sunk));
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    overflow-x: auto;
+  }
+
+  .diary-md pre code {
+    background: transparent;
+    padding: 0;
+    font-size: var(--type-body-sm);
+  }
+
+  .diary-md hr {
+    border: 0;
+    border-top: 1px solid rgb(var(--rgb-line));
+  }
+
+  .diary-md a {
+    color: rgb(var(--rgb-accent));
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* 任务清单的勾选框字符：等宽，缩进对齐 */
+  .diary-md .md-check {
+    font-family: var(--font-num);
+    color: rgb(var(--rgb-ink-3));
+  }
+
+  .diary-md .md-check-done {
+    color: rgb(var(--rgb-accent));
+  }
+
+  /*
+    月历四态标记：形状可区分（不只靠颜色），尺寸与 M1 逐字一致 ——
+    3px 方点（无任务）/ 8px 实心圆（全未完成）/ 半填充环（部分完成）/ 空心环（全完成）。
+  */
+  .mk {
+    display: grid;
+    place-items: center;
+    width: 14px;
+    height: 14px;
+  }
+
+  .mk-dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 1px;
+    background: rgb(var(--rgb-ink-3));
+  }
+
+  .mk-solid {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    background: rgb(var(--rgb-ink-2));
+  }
+
+  .mk-partial {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border-radius: var(--radius-full);
+    border: 1.5px solid rgb(var(--rgb-accent));
+    overflow: hidden;
+  }
+
+  .mk-partial::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgb(var(--rgb-accent));
+    clip-path: inset(0 50% 0 0);
+  }
+
+  .mk-ring {
+    width: 10px;
+    height: 10px;
+    border-radius: var(--radius-full);
+    border: 1.5px solid rgb(var(--rgb-done));
+  }
+
+  /* Markdown 正文里的图片（F4 错题拍照）：本机压缩后内嵌，按宽度自适应 */
+  .md-img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.5rem 0;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgb(var(--rgb-line));
+  }
+
+  /* 复习时的图片遮挡（F13）：错题照片往往就是解法本身，先糊住自己默一遍 */
+  .md-img-mask {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: zoom-in;
+  }
+
+  .md-img-mask .md-img {
+    /* 12px 足够让文字认不出来，又不至于在低端安卓上把 WebView 糊成幻灯片 */
+    filter: blur(12px);
+    transition: filter var(--dur-base) var(--ease-standard);
+  }
+
+  .md-img-mask__hint {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-sm);
+    background: rgb(var(--rgb-surface) / 0.35);
+    font-size: var(--type-label);
+    font-weight: 600;
+    color: rgb(var(--rgb-ink-2));
+    pointer-events: none;
+  }
+
+  .md-img-mask.is-revealed {
+    cursor: default;
+  }
+
+  .md-img-mask.is-revealed .md-img {
+    filter: none;
+  }
+
+  .md-img-mask.is-revealed .md-img-mask__hint {
+    display: none;
+  }
+
+  /* 代码块（F11）：语言标签 + 一键复制。不引高亮库，只做等宽与配色 */
+  .md-code {
+    position: relative;
+    margin: 0.5rem 0;
+    border: 1px solid rgb(var(--rgb-line));
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: rgb(var(--rgb-surface-sunk));
+  }
+
+  .md-code-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.25rem 0.5rem 0.25rem 0.75rem;
+    border-bottom: 1px solid rgb(var(--rgb-line));
+  }
+
+  .md-code-lang {
+    font-size: var(--type-label);
+    letter-spacing: 0.06em;
+    color: rgb(var(--rgb-ink-3));
+    text-transform: lowercase;
+  }
+
+  .md-code-copy {
+    font-size: var(--type-label);
+    color: rgb(var(--rgb-ink-3));
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--radius-sm);
+    transition: background-color var(--dur-short) var(--ease-standard),
+      color var(--dur-short) var(--ease-standard);
+  }
+
+  .md-code-copy:hover {
+    background: rgb(var(--rgb-accent) / 0.1);
+    color: rgb(var(--rgb-accent));
+  }
+
+  .md-code > pre {
+    margin: 0;
+    padding: 0.75rem;
+    overflow-x: auto;
+    font-family: var(--font-num);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: rgb(var(--rgb-ink));
+  }
+
+  /* 选中格：3px 面色 + 4px accent 的双层描边（与 M1 一致） */
+  .cal-selected {
+    box-shadow:
+      inset 0 0 0 3px rgb(var(--rgb-surface)),
+      inset 0 0 0 4px rgb(var(--rgb-accent));
+  }
+}
+
+/* ============================================================================
+   触摸设备修正
+   移动端浏览器点击后 :hover 会**残留**（元素一直保持 hover 态直到点别处），
+   这是"手机上看起来像选中了但没选中"的经典 bug。这里显式关掉 hover 态，
+   只保留 :active 的即时反馈；同时把依赖 hover 才能看到的操作改为常驻。
+   ========================================================================= */
+@media (hover: none) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .row-hover:hover {
+    background: transparent;
+  }
+
+  .row-hover:active {
+    background: rgb(var(--rgb-ink) / var(--press-alpha));
+  }
+
+  /* 无 hover 的设备上，「…」必须常驻，否则触摸用户永远看不到它 */
+  .row-more {
+    opacity: 1;
+  }
+}
+
+/* ============================================================================
+   降级：prefers-reduced-motion 下位移与回弹全关，只留透明度
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 100ms !important;
+    transition-property: opacity !important;
+  }
+}

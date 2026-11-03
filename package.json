@@ -1,0 +1,90 @@
+{
+  "name": "daily-todo",
+  "version": "0.31.2",
+  "license": "Apache-2.0",
+  "private": true,
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run build-info && vite build",
+    "preview": "vite preview --port 4173",
+    "build:file": "npm run build-info && vite build --mode singlefile",
+    "build-info": "python scripts/build_info.py",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.node.json --noEmit",
+    "test": "vitest run",
+    "android:sync": "npx cap sync android",
+    "desktop:build": "npm run build-info && vite build --mode client --outDir dist-single",
+    "desktop:dev": "npm run desktop:build && electron .",
+    "desktop:exe": "npm run desktop:build && electron-builder --win --x64",
+    "smoke": "node scripts/smoke_e2e.mjs",
+    "audit:arch": "node scripts/audit_architecture.mjs",
+    "audit:layout": "node scripts/audit_mobile_layout.mjs",
+    "report:firstscreen": "node scripts/report_first_screen.mjs",
+    "audit:longterm": "node scripts/audit_longterm_ui.mjs",
+    "verify:flows": "node scripts/verify_longterm_flows.mjs",
+    "desktop:build:cloud": "npm run build-info && vite build --mode singlefile --outDir dist-single",
+    "desktop:exe:cloud": "npm run desktop:build:cloud && electron-builder --win --x64",
+    "android:sync:cloud": "npm run desktop:build:cloud && npx cap sync android",
+    "web:build": "npm run build-info && vite build --mode singlefile --outDir dist-web"
+  },
+  "dependencies": {
+    "@capacitor/preferences": "^8.0.1",
+    "@tencent-ai/workbuddy-cloud-sdk": "^0.1.4-dev.ca27990.202610161713",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/cli": "^8.5.3",
+    "@capacitor/core": "^8.5.3",
+    "@electron/asar": "^4.3.1",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.21",
+    "electron": "^33.4.11",
+    "electron-builder": "^26.18.0",
+    "jsdom": "^25.0.1",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5",
+    "vite-plugin-singlefile": "^2.2.0",
+    "vitest": "^3.2.5"
+  },
+  "build": {
+    "appId": "cn.dailytodo.app",
+    "productName": "芒果本本",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "electron/**",
+      "dist-single/**"
+    ],
+    "win": {
+      "icon": "public/icons/app.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}

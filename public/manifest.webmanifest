@@ -1,0 +1,59 @@
+{
+  "name": "芒果本本",
+  "short_name": "芒果本本",
+  "description": "打开就是今天的轻量待办清单，数据只存在本机，无网络请求。",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "id": "daily-todo",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "portrait-primary",
+  "background_color": "#FAFAFA",
+  "theme_color": "#FAFAFA",
+  "categories": [
+    "productivity",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "今日",
+      "short_name": "今日",
+      "url": "./?view=today"
+    },
+    {
+      "name": "周视图",
+      "short_name": "本周",
+      "url": "./?view=week"
+    },
+    {
+      "name": "日历",
+      "short_name": "日历",
+      "url": "./?view=calendar"
+    }
+  ]
+}

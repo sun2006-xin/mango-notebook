@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="rgb(250,250,250)" />
+    <title>芒果本本</title>
+    <!--
+      内容安全策略。
+      单文件交付的脚本是内联的，所以 script-src 不得不留 'unsafe-inline' ——
+      这条 CSP 挡不住"已经发生的注入"，它挡的是**注入之后的外传**：
+      XSS 想把数据 POST 到攻击者服务器会被浏览器直接拒绝。
+      object-src / base-uri 关掉，属于零成本的顺手加固。
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' __CSP_CLOUD_ORIGINS__; frame-src 'self' __CSP_CLOUD_ORIGINS__; object-src 'none'; base-uri 'none'; form-action 'self'"
+    />
+
+    <!-- PWA：安装到手机主屏 / 电脑桌面后全屏运行、有独立图标、离线可用 -->
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <!-- SVG 优先：矢量在任何 DPI 下都锐利；不支持时再回落 PNG -->
+    <link rel="icon" type="image/svg+xml" href="./icons/mango.svg" />
+    <link rel="icon" type="image/png" href="./icons/icon-192.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="芒果本本" />
+    <meta name="description" content="打开就是今天的轻量待办清单，数据只存在本机，无网络请求。" />
+    <!--
+      防闪烁（ARCHITECTURE §7.4）：必须在样式表之前同步执行。
+      读 localStorage['dt:app:v1'] → settings.theme → 'system' 时看 prefers-color-scheme，
+      首帧绘制前就把 data-theme 定好，否则深色用户会看到一帧白闪。
+    -->
+    <script>
+      (function () {
+        var theme = 'system';
+        try {
+          var raw = window.localStorage.getItem('dt:app:v1');
+          if (raw) {
+            var parsed = JSON.parse(raw);
+            var t = parsed && parsed.settings && parsed.settings.theme;
+            if (t === 'light' || t === 'dark' || t === 'system') theme = t;
+          }
+        } catch (e) {
+          /* 读取失败一律按跟随系统处理，不阻塞首屏 */
+        }
+        var dark =
+          theme === 'dark' ||
+          (theme === 'system' &&
+            typeof window.matchMedia === 'function' &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,52 @@
+# 依赖与产物
+node_modules/
+dist/
+dist-ssr/
+
+# 日志
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# 编辑器 / 系统
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# 缓存
+.vite/
+.tmp/
+coverage/
+*.local
+build-info.json
+
+# ── 三端构建产物（都能用 npm 命令重建，绝不入库）─────────────────────
+dist-single/
+dist-web/
+dist-publish/
+release/
+android/app/build/
+android/.gradle/
+*.apk
+*.zip
+
+# ── 签名与密钥（一旦入库，历史里就洗不干净）─────────────────────────
+*.jks
+*.keystore
+keystore.properties
+.env
+.env.*
+# 仅公开模板入库；本地测试配置从安全模板复制后保持忽略。
+!.env.example
+!.env.test.example
+
+!.env.test
+# ── 本机个人数据（导出备份里有真实任务/日记原文）────────────────────
+*云端数据备份*
+private-backups/
+
+# cap sync 生成的部署配置（含 server.hostname，属于部署信息，不是源码）
+android/app/src/main/assets/capacitor.config.json
