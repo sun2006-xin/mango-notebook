@@ -33,9 +33,13 @@ app.setPath('userData', path.join(app.getPath('appData'), 'daily-todo'));
 
 /* 沙箱/受限环境下 Chromium 渲染进程可能崩溃或无法加载本地文件。
    在 ready 之前追加，等效于命令行传参，用户双击也能生效。 */
-app.commandLine.appendSwitch('no-sandbox');
+/* 生产构建保留 Chromium 沙箱：页面已由本机 HTTP 服务提供，不再需要 file:// 兼容开关。 */
 app.commandLine.appendSwitch('disable-gpu');
 app.commandLine.appendSwitch('disable-software-rasterizer');
+
+function safeOrigin(url) {
+  try { return new URL(url).origin; } catch { return '<invalid-url>'; }
+}
 
 function log(message) {
   const line = `[${new Date().toISOString()}] ${message}\n`;
@@ -368,7 +372,7 @@ function createWindow(webDir) {
   setTimeout(reveal, 1500);
 
   win.webContents.on('did-fail-load', (_e, code, desc, url) => {
-    log(`did-fail-load: code=${code} desc=${desc} url=${url}`);
+    log(`did-fail-load: code=${code} desc=${desc} origin=${safeOrigin(url)}`);
   });
   win.webContents.on('console-message', (_e, level, message, line, sourceId) => {
     log(`console[${level}] ${message} @ ${sourceId}:${line}`);
@@ -450,7 +454,7 @@ function createWindow(webDir) {
     if (isSameOrigin(allowed, url)) return;
     event.preventDefault();
     if (/^https?:\/\//i.test(url)) shell.openExternal(url);
-    log(`已拦截窗口内跳转: ${url}`);
+    log(`已拦截窗口内跳转: ${safeOrigin(url)}`);
   });
 }
 

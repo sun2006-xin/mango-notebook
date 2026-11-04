@@ -43,7 +43,6 @@ keystore.properties
 !.env.example
 !.env.test.example
 
-!.env.test
 # ── 本机个人数据（导出备份里有真实任务/日记原文）────────────────────
 *云端数据备份*
 private-backups/

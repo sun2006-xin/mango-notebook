@@ -148,7 +148,7 @@ export function QuickAdd({ date, today, onAdd, onExpand, inputRef }: QuickAddPro
         onChange={(event) => setDraft(event.target.value)}
         className="h-11 min-w-0 flex-1 bg-transparent text-body text-ink outline-none"
       />
-      {/* 预计用时：留空 = 未估时（0）。窄屏缩到 w-14，但仍保留 ——
+      {/* 预计用时：留空 = 未估时（0）。窄屏缩到 w-14，但仍保留 —— 
           它是今日预算的唯一数据来源，藏起来预算就永远是空的。 */}
       <input
         type="number"
