@@ -129,7 +129,14 @@
 
 ## 开发与构建
 
-需要 Node.js 与 npm。在项目根目录运行：
+构建前先准备以下环境：
+
+- Node.js 20+ 与 npm。
+- Python 3，并确保 `python` 命令指向 Python 3。`npm run build`、`npm run desktop:build` 等脚本会先运行 `python scripts/build_info.py`；没有 Python 3 会在构建开始时报错。
+- 构建 Android APK 还需要 JDK 17 和 Android SDK。`npm run android:sync` 会重新生成 Capacitor 的 Android 文件。
+- 首次运行 `npm run desktop:exe` 时，electron-builder 需要联网下载 Electron；网络代理、防火墙或离线环境可能导致首次构建失败。
+
+准备好环境后，在项目根目录运行：
 
 ~~~bash
 npm ci
