@@ -125,7 +125,7 @@
 ## 获取版本
 
 - [打开 GitHub Releases](https://github.com/sun2006-xin/mango-notebook/releases)，查看每个版本实际提供的源码与安装包。
-- 当前 <strong>v0.31.2</strong> Release 提供源码；Windows 与 Android 安装包尚未附加到该版本。请以 Releases 页面列出的文件为准。
+- 最新版本为 <a href="https://github.com/sun2006-xin/mango-notebook/releases/tag/v0.31.3">v0.31.3</a>，提供 Android APK 与 Windows ZIP 安装包；源码、构建标识和 SHA-256 校验值可在对应 Release 查看。
 
 ## 开发与构建
 
