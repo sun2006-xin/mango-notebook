@@ -1,108 +1,144 @@
-# 芒果本本（Mango Notebook）
+<div align="center">
+  <img src="assets/mango-notebook-github-banner.jpg" alt="芒果本本：离线优先的个人学习规划应用" width="100%" />
 
-![芒果本本 GitHub 主视觉海报](assets/mango-notebook-github-banner.jpg)
+  <p><strong>把计划、专注、复习与复盘，连成每天可持续的学习节奏。</strong></p>
+  <p>个人学习规划工具 · Web · Windows · Android</p>
 
-**把计划、专注、复习和复盘放进同一条学习流程。** 芒果本本是一款离线优先的个人学习规划应用：你可以安排每天与每周的任务，用专注计时记录投入，把笔记和错题加入间隔复习，再通过日记、习惯和作息记录回看自己的节奏。
+  <p>
+    <a href="#功能导览">功能导览</a> ·
+    <a href="#平台与数据">平台与数据</a> ·
+    <a href="#获取版本">获取版本</a> ·
+    <a href="#开发与构建">开发与构建</a>
+  </p>
 
-**Mango Notebook** is an offline-first personal learning planner for daily tasks, weekly planning, focus sessions, spaced-repetition notes, journaling, habits, and routines.
+  <p>
+    <a href="https://github.com/sun2006-xin/mango-notebook/releases">查看 Releases</a> ·
+    <a href="https://github.com/sun2006-xin/mango-notebook">浏览源码</a>
+  </p>
 
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
+  <p>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache--2.0-3d7a55?style=flat-square" alt="Apache-2.0 license" /></a>
+    <img src="https://img.shields.io/badge/platform-Web%20%7C%20Windows%20%7C%20Android-456d59?style=flat-square" alt="Web, Windows, Android" />
+    <img src="https://img.shields.io/badge/storage-offline--first-e8a928?style=flat-square" alt="Offline-first" />
+  </p>
+</div>
 
-> **图片说明：** 下方功能图是为项目介绍制作的生成式产品示意图，不是从当前运行版本截取的实机截图。图中的文字、日期和界面细节仅作视觉展示；具体功能以本仓库源码和实际运行版本为准。
+> **图片说明：** 主视觉和功能图均为生成式产品示意图，不是当前软件的实机截图或兼容性证明。示意图中的文字和界面细节仅用于展示产品方向，具体功能以源码和实际版本为准。
 
-## 你可以用它做什么
+## 芒果本本是什么
 
-- **安排任务：** 建立今日待办、按分类组织任务、查看完成进度，并用周计划和日历安排后续。
-- **记录专注：** 使用番茄钟或秒表工作，把完成的专注时段汇总到任务和每日统计中。
-- **复习学习内容：** 整理笔记与错题，按标签查找，并通过间隔重复队列安排回顾。
-- **留下学习记录：** 用 Markdown 写日记、生成周度回顾，同时跟踪习惯和起床/睡觉作息。
-- **掌握自己的数据：** 官方 Windows 与 Android 版本默认本地保存；可以通过数据导入、导出和备份迁移。
+芒果本本是一款离线优先的个人学习规划应用。它把每日待办、周计划、专注计时、学习笔记、间隔复习、Markdown 日记、习惯和作息记录放在一个连贯的工作流中。
 
-## 功能一览
+| 从今天开始 | 持续推进 | 回看过程 |
+| --- | --- | --- |
+| 把任务拆到每天，记录预计用时与完成情况。 | 用专注计时留下投入，把笔记和错题加入复习。 | 通过日记、习惯与周回顾观察自己的节奏。 |
 
-### 今日任务：把当天要做的事变成清晰清单
+## 功能导览
 
-在今日页查看当天安排、任务完成情况与进度；任务可以按日期和分类组织。逾期事项、预计用时和已专注时间等信息帮助你判断今天的负担。若有到期复习卡片，今日页也会给出复习入口。
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <strong>01 · 今日任务</strong><br />
+      查看当天待办、已完成进度和到期复习；按日期与分类安排任务，并记录预计用时和实际专注。
+      <br /><br />
+      <img src="assets/features/today-tasks.png" alt="今日任务与完成进度示意图" width="100%" />
+    </td>
+    <td width="50%" valign="top">
+      <strong>02 · 周计划</strong><br />
+      先排出一周的学习骨架，再调整每天的安排；可按周模板复用计划。
+      <br /><br />
+      <img src="assets/features/weekly-plan.png" alt="周计划示意图" width="100%" />
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <strong>03 · 日历安排</strong><br />
+      按月或按周浏览任务，选择日期查看当天安排，掌握近期进度。
+      <br /><br />
+      <img src="assets/features/calendar.png" alt="日历和当日任务示意图" width="100%" />
+    </td>
+    <td width="50%" valign="top">
+      <strong>04 · 专注规划</strong><br />
+      从任务进入专注，回看当天与本周的投入情况；目标和计时偏好可在设置中调整。
+      <br /><br />
+      <img src="assets/features/focus-planning.png" alt="任务规划与专注统计示意图" width="100%" />
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <strong>05 · 番茄钟与秒表</strong><br />
+      选择番茄钟或秒表记录学习时段，让专注时间与任务进展对应起来。
+      <br /><br />
+      <img src="assets/features/focus-timer.png" alt="番茄钟和秒表示意图" width="100%" />
+    </td>
+    <td width="50%" valign="top">
+      <strong>06 · 笔记与间隔复习</strong><br />
+      用标签整理笔记、错题和待记内容；先尝试回忆，再按掌握程度安排后续复习。
+      <br /><br />
+      <img src="assets/features/notes-review.png" alt="学习笔记与间隔复习示意图" width="100%" />
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <strong>07 · 习惯与作息</strong><br />
+      每日打卡并在日历中回看记录，也可登记起床和睡觉时间，观察作息变化。
+      <br /><br />
+      <img src="assets/features/habits-routine.png" alt="习惯打卡与作息示意图" width="100%" />
+    </td>
+    <td width="50%" valign="top">
+      <strong>08 · Markdown 日记</strong><br />
+      用 Markdown 记录学习过程；周回顾可汇总任务和专注情况，并写入对应日期的日记。
+      <br /><br />
+      <img src="assets/features/diary.png" alt="Markdown 日记与周回顾示意图" width="100%" />
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <strong>09 · 一套连贯的学习流程</strong><br />
+      从每日任务开始，记录专注，复习学习内容，再留下日记与回顾。
+      <br /><br />
+      <img src="assets/features/task-workflow.png" alt="任务、专注、复习和复盘工作流示意图" width="100%" />
+    </td>
+    <td width="50%" valign="top">
+      <strong>10 · 多端产品形态</strong><br />
+      项目包含 Web、Windows 桌面和 Android 客户端，共用主要应用逻辑。
+      <br /><br />
+      <img src="assets/features/cross-platform.png" alt="Web、Windows 和 Android 多端示意图" width="100%" />
+    </td>
+  </tr>
+</table>
 
-![今日任务与进度示意图](assets/features/today-tasks.png)
+## 平台与数据
 
-### 周计划与日历：从一周到某一天安排进度
+| 版本 | 登录与存储 | 说明 |
+| --- | --- | --- |
+| Web | 已部署版本保留项目方登录与云端同步。 | 登录和云存储由项目方的私有服务提供。 |
+| Windows | 默认开源客户端不提供项目方账号登录，数据保存在本机。 | 支持本地使用与数据备份。 |
+| Android | 默认开源客户端不提供项目方账号登录，数据保存在本机。 | 可按自己的需要管理和迁移本地数据。 |
 
-周计划适合先排出一周的学习骨架，再逐日调整；日历则用于按月或按周浏览任务，并切到某一天查看安排。设置中还可以配置每周模板和一周从哪天开始。
+项目方托管的 Web 实例使用手机号验证码登录，数据保存在项目方自有云服务中。该实例的数据库策略、数据留存和账号删除规则不属于本仓库，也未由第三方独立核验；开源源码不包含该实例的凭据或运行配置。
 
-| 周计划 | 月历与当日任务 |
-| --- | --- |
-| <img src="assets/features/weekly-plan.png" alt="周计划示意图" width="100%"> | <img src="assets/features/calendar.png" alt="日历任务示意图" width="100%"> |
+源码保留自有服务接入路径：使用者可以在构建时配置自己的服务并自行构建客户端。**已安装的 Windows / Android 客户端没有运行时更换服务器地址的设置页。**自建服务还需要自行实现账号认证、用户数据隔离、备份与删除策略。配置说明见 [docs/SELF-HOSTING.md](docs/SELF-HOSTING.md)。
 
-### 专注计时：用番茄钟或秒表记录投入
+数据导入、导出、桌面自动备份等说明见 [docs/SELF-HOSTING.md](docs/SELF-HOSTING.md)。请勿把个人 <code>.env.local</code>、服务密钥、Android 签名文件或真实用户数据提交到公开仓库。
 
-按任务开始一段专注，选择番茄钟或秒表，并查看今天与本周的专注情况。番茄时长、每日目标、严格模式和自动续接等选项可在设置中调整；提醒与计入统计的专注记录分开处理。
+## 获取版本
 
-| 专注与规划 | 番茄钟与计时 |
-| --- | --- |
-| <img src="assets/features/focus-planning.png" alt="任务规划与专注统计示意图" width="100%"> | <img src="assets/features/focus-timer.png" alt="番茄钟与秒表示意图" width="100%"> |
+- [打开 GitHub Releases](https://github.com/sun2006-xin/mango-notebook/releases)，查看每个版本实际提供的源码与安装包。
+- 当前 <strong>v0.31.2</strong> Release 提供源码；Windows 与 Android 安装包尚未附加到该版本。请以 Releases 页面列出的文件为准。
 
-### 笔记与间隔复习：从记录走到回顾
-
-把学习笔记、错题或待记内容保存在笔记区，用标签整理。进入复习后先尝试回忆答案，再对掌握程度进行评价；复习进度据此安排后续回顾。你也可以查看待复习数量，并在设置中管理每日新卡上限。
-
-![笔记与间隔复习示意图](assets/features/notes-review.png)
-
-### 习惯与作息：留下每天的轻量记录
-
-配置需要坚持的习惯，在今日页完成打卡，并通过打卡日历回看记录；也可以登记起床和睡觉时间，观察作息变化。
-
-![习惯打卡与作息记录示意图](assets/features/habits-routine.png)
-
-### 日记与周回顾：记录过程，也总结进展
-
-日记支持 Markdown 编辑和预览。周回顾可汇总任务与专注等数据，并写入对应日期的日记，方便将计划、执行情况和个人想法放在一起查看。
-
-Markdown 链接语法允许 HTTP(S) 与 mailto。Windows 桌面版会把 HTTP(S) 外链交给系统默认浏览器；当前桌面代码不会把 mailto 链接转交给外部程序。网页版在新标签页打开链接，由浏览器按协议处理。HTTP(S) 链接带有 `noreferrer`，不会把应用页面地址作为来源传给目标站点。外部站点仍会按浏览器正常请求获得访问所需的信息；应用没有内置网页浏览或网页抓取界面。日记图片支持本地内嵌 PNG/JPEG/WebP；当前内容安全策略不允许加载远程图片。
-
-![Markdown 日记与周回顾示意图](assets/features/diary.png)
-
-### 一套流程，多处衔接
-
-任务、专注、复习、习惯与日记在应用内相互连接：从今天的任务开始，记录投入，回顾学习内容，再留下复盘。
-
-![芒果本本主要工作流示意图](assets/features/task-workflow.png)
-
-### Web、Windows 与 Android
-
-项目包含 Web、Windows 桌面与 Android 客户端。三端共享主要应用逻辑，并由各自的平台壳提供运行能力。下面的多屏图是概念展示，不能代替真实设备截图或兼容性测试。
-
-![Web、桌面与手机多屏示意图](assets/features/cross-platform.png)
-
-## 平台、登录与数据
-
-| 版本 | 登录与数据方式 |
-| --- | --- |
-| 网页版 | 已部署版本可访问，保留项目方登录与云端同步；使用手机号短信验证码登录。 |
-| Windows | 默认开源版本不提供项目方账号登录，数据保存在本机。 |
-| Android | 默认开源版本不提供项目方账号登录，数据保存在本机。 |
-
-Windows 和 Android 默认版本适合不依赖项目方账号、本地管理学习数据的使用方式。源码保留自有服务器接入路径：用户可以填写自己的服务配置并自行构建客户端。**目前服务器地址在构建时配置；已安装客户端没有运行时更换服务器的设置页。** 自建服务还需要自行实现账号认证、用户数据隔离和备份策略。
-
-**隐私边界：** 已部署网页版登录时会向其配置的认证服务提交手机号，登录后的学习数据按该版本的云同步配置发送到对应服务。本仓库不包含这套部署使用的数据库策略，因此无法从公开源码核验云端的数据访问控制、保留期限或删除规则。Windows / Android 默认版本把数据保存在设备本地；当前源码未实现应用层静态加密，建议保护设备账户，并谨慎保管导出的备份。
-
-数据导入导出、桌面自动备份以及自有服务的配置方式见 [`docs/SELF-HOSTING.md`](docs/SELF-HOSTING.md)。请勿将个人 `.env.local`、服务密钥、Android 签名文件或真实用户数据提交到公开仓库。
-
-## 开始使用
-
-### 在浏览器中开发
+## 开发与构建
 
 需要 Node.js 与 npm。在项目根目录运行：
 
-```bash
+~~~bash
 npm ci
 npm run dev
-```
+~~~
 
-### 开发与构建命令
+常用开发命令：
 
-```bash
-# 常用质量检查与 Web 构建
+~~~bash
 npm test
 npm run typecheck
 npm run build
@@ -110,19 +146,23 @@ npm run web:build
 
 # Windows 桌面端
 npm run desktop:dev
-npm run desktop:exe
 npm run desktop:build
+npm run desktop:exe
 
 # Android
 npm run android:sync
-```
+~~~
 
-以上是项目提供的命令，不代表每种系统环境和构建产物都已在本次发布中逐一验证。自有服务器客户端的环境变量与构建步骤请先阅读 [`docs/SELF-HOSTING.md`](docs/SELF-HOSTING.md)。
+这些命令表示仓库提供相应脚本，不代表每种系统环境和构建产物都已在本次发布中逐一验收。自有服务器客户端的环境变量与构建步骤请先阅读 [docs/SELF-HOSTING.md](docs/SELF-HOSTING.md)。
 
-## 技术栈
+<details>
+  <summary>技术栈与 English summary</summary>
 
-React、TypeScript、Vite、Electron 与 Capacitor。Web、Windows 和 Android 共用 `src/` 中的应用逻辑，平台能力由 Electron 和 Capacitor 提供。
+  <p><strong>技术栈：</strong> React、TypeScript、Vite、Electron、Capacitor。Web、Windows 和 Android 共用主要应用逻辑，平台能力由 Electron 与 Capacitor 提供。</p>
+
+  <p><strong>English:</strong> Mango Notebook is an offline-first personal learning planner for daily tasks, weekly plans, focus sessions, spaced-repetition notes, journaling, habits, and routines. The hosted Web version supports project login and sync. Default Windows and Android clients store data locally and do not include project login. Self-hosted clients require build-time configuration. The project is licensed under Apache-2.0.</p>
+</details>
 
 ## 许可证
 
-本项目以 Apache License 2.0 开源，详见 [`LICENSE`](LICENSE)。
+本项目采用 [Apache License 2.0](LICENSE)。
